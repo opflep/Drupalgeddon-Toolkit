@@ -64,8 +64,8 @@ def isVulnerable(host, version):
 	return True
 
 
-host = 'http://68.183.237.96/'
-version ='7.2'
+host = 'http://192.168.210.131'
+version ='8.2'
 print 'Testing: ', host
 print '=' * 25
 if isVulnerable(host,version):
