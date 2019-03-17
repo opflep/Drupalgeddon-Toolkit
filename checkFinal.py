@@ -59,7 +59,7 @@ def main(argv):
 				with open('output/'+outputfile, 'a') as f:
 					f.write("%s\n" % result.encode("utf-8"))
 	with open('output/'+outputfile, 'a') as f:
-		f.write("Total Time: %s\n" % (time.clock() - start))
+		f.write("------| Total Time: %s |-------\n" % (time.clock() - start))
 
 if __name__ == "__main__":
    main(sys.argv[1:])
