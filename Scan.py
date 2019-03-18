@@ -18,7 +18,7 @@ def isFormValid(host,version):
 	url = host +form_id
 	# print url
 	r = requests.get(url)
-	if (r == 200):
+	if (r.status_code == 200):
 		return True
 
 	return False

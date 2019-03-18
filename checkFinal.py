@@ -35,8 +35,10 @@ def main(argv):
         for line in ins:
             host = "http://"+line.strip()
             try:
-                r = requests.post(host+"/CHANGELOG.txt",
-                                  verify=False, timeout=2)
+                r = requests.post(host+"/CHANGELOG.txt", verify=False, timeout=1)
+                # print r.status_code!=200
+                if(r.status_code != 200):
+                    r = requests.post(host+"/core/CHANGELOG.txt", verify=False, timeout=1)
                 data = r.text
             except Exception as e:
                 data = ""
