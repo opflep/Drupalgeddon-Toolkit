@@ -23,7 +23,7 @@ def main(argv):
             inputfile = arg
     outputfile = "output\output_"+ntpath.basename(inputfile)
     print('-' * 50)
-    print('|| Input file is 	 :', inputfile)
+    print('|| Input file is      :', inputfile)
     print('|| Output file is     :', outputfile)
     print('-' * 50)
 
@@ -32,20 +32,15 @@ def main(argv):
     print('Scanning' + ' .' * 15)
     with open(inputfile, "r") as ins:
         array = []
-        i = 1
         for line in ins:
-            # if i%200 == 0:
-            # 	print(i)
-            # i=i+1
             host = "http://"+line.strip()
             try:
                 r = requests.post(host+"/CHANGELOG.txt",
                                   verify=False, timeout=2)
                 data = r.text
             except Exception as e:
-                # print("connect error")
                 data = ""
-            if "Drupal" in data and "<!doctype html>" not in data and "<!DOCTYPE html>" not in data:
+            if "Drupal 1.0.0, 2001-01-15" in data and "<!doctype html>" not in data and "<!DOCTYPE html>" not in data:
                 check = True
                 sline = 0
                 while check:
