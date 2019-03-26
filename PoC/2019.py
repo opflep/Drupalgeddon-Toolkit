@@ -216,9 +216,9 @@ if __name__ == '__main__':
 
     target = sys.argv[1]
     command = sys.argv[2]
-    if not uri_valid(target):
-        print(f'Target {target} is not a valid URL')
-        sys.exit(1)
+    # if not uri_valid(target):
+    #     print(f'Target {target} is not a valid URL')
+    #     sys.exit(1)
 
     print(f'Targeting {target}...')
     main(target, command)

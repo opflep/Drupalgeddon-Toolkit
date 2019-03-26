@@ -20,6 +20,8 @@ else:
     ]
   }'''%(url,len(command),command,len(func),func)
 
+  print jsonx
+  # print ('%snode/%s?_format=hal_json'%(url,node))
   r = requests.get('%snode/%s?_format=hal_json'%(url,node),allow_redirects=False,headers=headers,data=jsonx)
-  # print r.content.replace('"}]},','').replace('}]}],','').split("}]}",1)[1]
-  print r
+  print r.content.replace('"}]},','').replace('}]}],','').split("}]}",1)[1]
+  # print r.content
