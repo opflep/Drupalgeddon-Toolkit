@@ -12,10 +12,10 @@ from multiprocessing import Pool
 start = time.time()
 urllib3.disable_warnings()
 
-# file = open(sys.argv[1], 'r', encoding="utf-8")
-# outputfile = sys.argv[2]
-# lines = file.readlines()
-outputfile = "output.txt"
+file = open(sys.argv[1], 'r', encoding="utf-8")
+outputfile = sys.argv[2]
+lines = file.readlines()
+# outputfile = "output.txt"
 
 
 def getRandomUserAgent():
@@ -100,30 +100,27 @@ def isVulnerable(lines):
     }
     host = "http://"+lines.strip().split("|")[0]+"/"
     version = lines.strip().split("|")[1]
-    print(lines)
-    if lines is None:
-        print("None")
-    check = True
     # print('Form Valid: ', isFormValid(host, version, headers))
-
-    if isFormValid(host, version, headers) == False:
-        check = False
-
-    if isPwnAble_2018(host, version, headers) == False:
-        check = False
-
-    if check:
-        with open(outputfile, 'a') as f:
-            f.write("%s\n" % host.encode("utf-8"))
+    if isFormValid(host, version, headers):
+        print(host)
+        if isPwnAble_2018(host, version, headers) == False:
+            with open(outputfile, 'a') as f:
+                f.write("%s\n" % host.encode("utf-8"))
 
 
 if __name__ == "__main__":
-    lines = 'argusme.com|7.44'
+    # lines = 'argusme.com|7.44'
     # version = ''
-    isVulnerable(lines)
+    # isVulnerable(lines)
     # print('=' * 25)
-    # p = Pool(processes=20)
-    # result = p.map(isVulnerable, lines)
+    try:
+        # p = Pool(processes=20)
+        # result = p.map(isVulnerable, lines)
+        for line in lines:
+            isVulnerable(line)
+        # isVulnerable(line)
+    except:
+        result = ""
 
     # Open output file and write the total time scanning
     with open(outputfile, 'a') as f:
