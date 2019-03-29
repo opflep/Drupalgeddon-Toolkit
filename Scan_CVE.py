@@ -24,12 +24,17 @@ def isFormValid(host, version, headers):
     urlq = host + '?q=' + form_id
     url = host + form_id
     # print url
-    redirectURL = ulti.isURLRedirected(url)
-    if(redirectURL is not False):
-        return redirectURL
+    # redirectURL = ulti.isURLRedirected(url)
+    # if(redirectURL is not False):
+    #     return redirectURL
+    check = ulti.checkURLStatus(urlq)
+    if (check is not False):
+        return check
 
-    if (ulti.isURLValid(urlq) or ulti.isURLValid(url)):
-        return True
+    check = ulti.checkURLStatus(url)
+    if (check is not False):
+        return check
+
     return False
 
 
@@ -86,7 +91,6 @@ def isVulnerable(lines):
     host = "http://"+lines.strip().split("|")[0]+"/"
     # print host
     version = lines.strip().split("|")[1]
-    # print('Form Valid: ', isFormValid(host, version, headers))
     formValid = isFormValid(host, version, headers)
     if (formValid is True):
         isPwned = isPwnAble_2018(host, version, headers)
@@ -101,7 +105,10 @@ def isVulnerable(lines):
             f.write("%s === Form Fail ===\n" % host.encode("utf-8"))
     else:
         with open(outputfile, 'a') as f:
-            f.write("%s === Redirected ===\n" % host.encode("utf-8"))
+            f.write("%s === Redirected ===  || %s  \n"
+                    % (host.encode("utf-8"), formValid))
+
+                  
 if __name__ == "__main__":
     # lines = 'argusme.com|7.44'
     # version = ''
