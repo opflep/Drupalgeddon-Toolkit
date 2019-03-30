@@ -113,5 +113,6 @@ def joinURL(*args):
 def genURLD8(host):
     if(host[-1:] != '/'):
         host = host + '/'
-    return host + 'user/register?element_parents=account/mail/%23value\
-                    &ajax_form=1&_wrapper_format=drupal_ajax'
+    host = ''.join([host, 'user/register?element_parents=account/mail/%23',
+                    'value&ajax_form=1&_wrapper_format=drupal_ajax'])
+    return host 

