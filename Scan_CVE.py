@@ -8,7 +8,11 @@ import urllib3
 from functools import partial
 from random import randint
 from multiprocessing import Pool
+import multiprocessing as mp
 import bb01_ultilities as ulti
+import logging
+
+logger = mp.log_to_stderr(logging.DEBUG)
 
 start = time.time()
 urllib3.disable_warnings()
@@ -20,6 +24,7 @@ lines = file.readlines()
 
 
 def isFormValid(host, version, headers):
+    if(host[:-1] != '/'): form+= '/'
     form_id = 'user/password' if version[:1] == '7' else 'user/register'
     urlq = host + '?q=' + form_id
     url = host + form_id
@@ -96,7 +101,7 @@ def isVulnerable(lines):
         isPwned = isPwnAble_2018(host, version, headers)
         if isPwned is True:
             with open(outputfile, 'a') as f:
-                f.write("%s === Vuln OK ===\n" % host.encode("utf-8"))
+                f.write("%s === Vuln OK === %s\n" % (host.encode("utf-8"), version))
         else:
             with open(outputfile, 'a') as f:
                 f.write("%s === Vuln Fail ===\n" % host.encode("utf-8"))
@@ -114,15 +119,25 @@ if __name__ == "__main__":
     # version = ''
     # isVulnerable(lines)
     # print('=' * 25)
-    try:
-        # p = Pool(processes=20)
+    # try:
+        # p = Pool(20)
         # result = p.map(isVulnerable, lines)
-        for line in lines:
-            isVulnerable(line)
-        # isVulnerable(line)
-    except:
-        result = ""
+        # for line in lines:
+        #     try:
+        #         isVulnerable(line)
+        #     except:
+        #         pass
 
+        # isVulnerable(line)
+    # except:
+    #     result = ""
+
+    p = Pool(20)
+    try:
+        result = p.map(isVulnerable, lines)
+    except:
+        pass
+    
     # Open output file and write the total time scanning
     with open(outputfile, 'a') as f:
         f.write("------| Total Time: %s |-------\n" % (time.time() - start))

