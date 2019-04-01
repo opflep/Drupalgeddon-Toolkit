@@ -12,7 +12,7 @@ import multiprocessing as mp
 import bb01_ultilities as ulti
 import logging
 
-logger = mp.log_to_stderr(logging.DEBUG)
+# logger = mp.log_to_stderr(logging.DEBUG)
 
 start = time.time()
 urllib3.disable_warnings()
@@ -24,7 +24,7 @@ lines = file.readlines()
 
 
 def isFormValid(host, version, headers):
-    if(host[:-1] != '/'): form+= '/'
+    if(host[-1:] != '/'): host+= '/'
     form_id = 'user/password' if version[:1] == '7' else 'user/register'
     urlq = host + '?q=' + form_id
     url = host + form_id
@@ -135,8 +135,8 @@ if __name__ == "__main__":
     p = Pool(20)
     try:
         result = p.map(isVulnerable, lines)
-    except:
-        pass
+    except Exception as e:
+        print e
     
     # Open output file and write the total time scanning
     with open(outputfile, 'a') as f:
