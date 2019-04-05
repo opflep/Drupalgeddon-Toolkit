@@ -76,13 +76,13 @@ def isURLCached(url, timeout=1):
 
 def checkURLStatus(url, timeout=5):
     headers = genHeader()
-    print headers
+    # print headers
     try:
         res = requests.get(url, headers=headers, timeout=timeout)
     except Exception as e:
         print e
         return False
-    if(res.history):
+    if(res.history and res.status_code is 200):
         return res.url
     elif(res.status_code is 200):
         return True
