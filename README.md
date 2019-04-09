@@ -79,7 +79,8 @@ $ python Scan.py \input\input_1.txt output_1.txt 2019
 
 ## Version
 
-Final version
+Draft - incluđe all pervious version that incomplete or unresolve bugs 
+Source_Final - release version
 
 ## Authors
 ### BB01 team
