@@ -42,6 +42,7 @@ $ python Check_CHANGELOG.py \input\input_1.txt output_1.txt
 With input file (drupal sites with version) 
 
 ```
+...
 autocraft-kzn.ru|5
 bergerault.com|5
 leisureandculturedundee.com|5
@@ -51,10 +52,10 @@ leisureandculturedundee.com|5
 Return normal site and vulnerable site (mark as --|CVE-2018-7600|--) 
 
 ```
+...
 autocraft-kzn.ru|5
 bergerault.com|5 --|CVE-2018-7600|--
 leisureandculturedundee.com|5 --|CVE-2018-7600|--
-...
 ...
 ```
 
@@ -81,6 +82,7 @@ $ python Scan.py \input\input_1.txt output_1.txt 2019
 Final version
 
 ## Authors
+### BB01 team
 
 * **VinhPT** - [zeralot](https://github.com/zeralot)
 * **VuNX** - [opflep](https://github.com/opflep)
