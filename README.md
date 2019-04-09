@@ -9,7 +9,7 @@ Toolkits that crawl data, drupal sites with version, detect CVE-2018-7600 & CVE-
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
 ---
 
 ### Crawl data
@@ -67,7 +67,9 @@ leisureandculturedundee.com|5 --|CVE-2018-7600|--
 ...
 ```
 
-run with command format like: $ python Scan.py [inputFile] [outputFile] [option]
+run with command format like: 
+> $ python Scan.py [inputFile] [outputFile] [option]
+
 In case want to detect CVE-2018-7600:
 
 ```
