@@ -10,7 +10,6 @@ Toolkits that crawl data, drupal sites with version, detect CVE-2018-7600 & CVE-
 ## Getting Started
 
 
----
 
 ### Crawl data
 
@@ -76,7 +75,7 @@ In case want to detect CVE-2018-7600:
 $ python Scan.py \input\input_1.txt output_1.txt 2018
 ...
 ```
-OR
+OR CVE-2019-6340
 ```
 $ python Scan.py \input\input_1.txt output_1.txt 2019
 ...
