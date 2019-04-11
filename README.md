@@ -91,7 +91,7 @@ $ python Scan.py \input\input_1.txt output_1.txt 2019
 ## Version
 
 > Draft 
-* incluđe all pervious version that incomplete or unresolve bugs 
+* include all pervious version that incomplete or unresolve bugs 
 
 > Source_Final 
 * release version
