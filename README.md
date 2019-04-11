@@ -56,13 +56,13 @@ leisureandculturedundee.com|5
 ...
 ```
 
-Return normal site and vulnerable site (mark as --|CVE-2018-7600|--) 
+Return normal site and vulnerable site (mark as |EXPLOITED|...) 
 
 ```
 ...
-autocraft-kzn.ru|5
-bergerault.com|5 --|CVE-2018-7600|--
-leisureandculturedundee.com|5 --|CVE-2018-7600|--
+abacus-direct.com|8.xx|N/A|
+fcaflightcenter.com|8.xx|N/A|
+ehudashkenazi.com|7.xx|EXPLOITED|
 ...
 ```
 
