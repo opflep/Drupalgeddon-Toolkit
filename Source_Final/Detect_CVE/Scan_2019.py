@@ -8,12 +8,12 @@ import sys
 #     node -> string: a node number that available
 def findNode(host, min = 1, max = 100 ):
     for node in range (min , max):
-        print 'Checking node :' , node
+        # print 'Checking node :' , node
         url = ulti.joinURL(host,'/node/',str(node))
         if ulti.isURLCached(url):
             continue
         if ulti.isURLValid(url):
-            print '='*5 + 'Node %s is valid' %node + "="*5 
+            # print '='*5 + 'Node %s is valid' %node + "="*5 
             return node
     return False
 
@@ -59,14 +59,8 @@ def isVuln(host):
     try:
         node = findNode(host)
         if(node):
-            return True
+            return checkNode(host, node), "NODE"
         else:
-            return False
+            return False, ""
     except:
-        return False
-
-if __name__ == '__main__':
-    host = 'http://68.183.237.96'
-    print host
-    if(isVuln(host)):
-        print 'Host is vulnerable'
+        return False, ""

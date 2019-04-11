@@ -6,7 +6,8 @@ import random
 import sys
 import time
 from random import randint
-from urlparse import urljoin
+# from urlparse import urljoin
+from urllib.parse import urljoin
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -45,9 +46,9 @@ def isURLRedirected(url, timeout=15):
     try:
         res = requests.get(url, headers=headers, timeout=timeout)
     except Exception as e:
-        print e
+        # print e
         return False
-    print res.status_code
+    # print res.status_code
     return res.url
 
 
@@ -57,7 +58,7 @@ def isURLValid(url, timeout=5):
     try:
         r = requests.get(url, headers=headers, timeout=timeout)
     except Exception as e:
-        print e
+        # print e
         return False
 
     return (r.status_code is 200)
@@ -80,7 +81,7 @@ def checkURLStatus(url, timeout=5):
     try:
         res = requests.get(url, headers=headers, timeout=timeout)
     except Exception as e:
-        print e
+        # print e
         return False
     if(res.history and res.status_code is 200):
         return res.url

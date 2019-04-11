@@ -29,23 +29,29 @@ def isVulnerable(lines):
     version = lines.strip().split("|")[1]
     if (option == "2018"):
         # check CVE 2018-7600
-        check = check_CVE_7600(host, version)
+        check, status = check_CVE_7600(host, version)
         if (check is True):
             with open(outputfile, 'a') as f:
-                f.write("%s --|CVE-2018-7600|-- \n" % host)
+                f.write("%s|EXPLOITED|\n" % lines.strip())
+        elif(status != ""):
+            with open(outputfile, 'a') as f:
+                f.write("%s|%s|\n" % (lines.strip(), status))
         else:
             with open(outputfile, 'a') as f:
-                f.write("%s \n" % host)
-
+                f.write("%s|N/A|\n" % lines.strip())
+                    
     elif (option == "2019"):
         # Check CVE 2019-6340
-        check = isVuln(host)
+        check, status = isVuln(host)
         if (check is True):
             with open(outputfile, 'a') as f:
-                f.write("%s --|CVE-2019-6340|-- \n" % host)
+                f.write("%s|EXPLOITED|\n" % lines.strip())
+        elif(status == "NODE"):
+            with open(outputfile, 'a') as f:
+                f.write("%s|NODE_AVAILABLE|\n" % lines.strip())
         else:
             with open(outputfile, 'a') as f:
-                f.write("%s \n" % host)
+                f.write("%s|N/A|\n" % lines.strip())
 
 
 if __name__ == "__main__":
