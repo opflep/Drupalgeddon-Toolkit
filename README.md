@@ -17,7 +17,9 @@ Crawl websites
 
 
 ```
-
+Broad Crawl Spider using Scrapy Framework (https://github.com/scrapy/scrapy/tree/master/scrapy)
+Warning: Desperately take time, Do not try it at home.
+Contact for the sites set
 ```
 
 ---
