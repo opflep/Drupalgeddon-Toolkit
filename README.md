@@ -17,7 +17,9 @@ Crawl websites
 
 
 ```
-
+Broad Crawl Spider using Scrapy Framework (https://github.com/scrapy/scrapy/tree/master/scrapy)
+Warning: Desperately take time, Do not try it at home.
+Contact for the sites set
 ```
 
 ---
@@ -56,13 +58,13 @@ leisureandculturedundee.com|5
 ...
 ```
 
-Return normal site and vulnerable site (mark as --|CVE-2018-7600|--) 
+Return normal site and vulnerable site (mark as |EXPLOITED|...) 
 
 ```
 ...
-autocraft-kzn.ru|5
-bergerault.com|5 --|CVE-2018-7600|--
-leisureandculturedundee.com|5 --|CVE-2018-7600|--
+abacus-direct.com|8.xx|N/A|
+fcaflightcenter.com|8.xx|N/A|
+ehudashkenazi.com|7.xx|EXPLOITED|
 ...
 ```
 
@@ -91,7 +93,7 @@ $ python Scan.py \input\input_1.txt output_1.txt 2019
 ## Version
 
 > Draft 
-* incluđe all pervious version that incomplete or unresolve bugs 
+* include all pervious version that incomplete or unresolve bugs 
 
 > Source_Final 
 * release version
@@ -101,5 +103,6 @@ $ python Scan.py \input\input_1.txt output_1.txt 2019
 
 * **VinhPT** - [zeralot](https://github.com/zeralot)
 * **VuNX** - [opflep](https://github.com/opflep)
+* **DuyBK** - [chalizard97](https://github.com/chalizard97)
 
 See also the list of [contributors](https://github.com/opflep/Drupalgeddon-Toolkit/graphs/contributors) who participated in this project.
