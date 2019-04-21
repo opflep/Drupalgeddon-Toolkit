@@ -23,7 +23,14 @@ Contact for the sites set
 ```
 
 ---
+### Crawler implemented with Check Version
 
+From an input file, check header and return site with version of Drupal
+> $ python crawl.py [outputFile]
+
+```
+
+---
 ### Check header
 
 From an input file, check header and return site with version of Drupal
@@ -103,6 +110,6 @@ $ python Scan.py \input\input_1.txt output_1.txt 2019
 
 * **VinhPT** - [zeralot](https://github.com/zeralot)
 * **VuNX** - [opflep](https://github.com/opflep)
-* **DuyBK** - [chalizard97)(https://github.com/chalizard97)
+* **DuyBK** - [chalizard97](https://github.com/chalizard97)
 
 See also the list of [contributors](https://github.com/opflep/Drupalgeddon-Toolkit/graphs/contributors) who participated in this project.

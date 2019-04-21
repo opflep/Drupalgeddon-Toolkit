@@ -32,7 +32,7 @@ def isVulnerable(lines):
         check, status = check_CVE_7600(host, version)
         if (check is True):
             with open(outputfile, 'a') as f:
-                f.write("%s|EXPLOITED|\n" % lines.strip())
+                f.write("%s|VULNERABLE|\n" % lines.strip())
         elif(status != ""):
             with open(outputfile, 'a') as f:
                 f.write("%s|%s|\n" % (lines.strip(), status))
@@ -45,7 +45,7 @@ def isVulnerable(lines):
         check, status = isVuln(host)
         if (check is True):
             with open(outputfile, 'a') as f:
-                f.write("%s|EXPLOITED|\n" % lines.strip())
+                f.write("%s|VULNERABLE|\n" % lines.strip())
         elif(status == "NODE"):
             with open(outputfile, 'a') as f:
                 f.write("%s|NODE_AVAILABLE|\n" % lines.strip())
