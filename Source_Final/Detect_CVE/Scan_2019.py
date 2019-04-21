@@ -58,7 +58,6 @@ def checkNode(host,node):
 def isVuln(host):
     check = ulti.checkURLStatus(host)
     if  check is not True and check is not False:
-        print 'xx'
         host = check
     try:
         node = findNode(host)
