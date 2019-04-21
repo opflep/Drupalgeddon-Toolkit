@@ -56,6 +56,11 @@ def checkNode(host,node):
 #     False: No vuln
 #     True: Vul
 def isVuln(host):
+    check = ulti.checkURLStatus(host)
+    if  check is not True and check is not False:
+        print 'xx'
+        host = check
+    print host
     try:
         node = findNode(host)
         if(node):
@@ -64,3 +69,7 @@ def isVuln(host):
             return False, ""
     except:
         return False, ""
+
+
+# print ulti.isURLValid('http://bezglutenowamama.pl/node/1')
+print isVuln('http://bezglutenowamama.pl/')
