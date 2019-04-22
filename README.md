@@ -114,5 +114,7 @@ $ droopescan scan --check [inputfile_path] --outfile [outputfile_path]
 * **VinhPT** - [zeralot](https://github.com/zeralot)
 * **VuNX** - [opflep](https://github.com/opflep)
 * **DuyBK** - [chalizard97](https://github.com/chalizard97)
+* **TungPT** - [Inf3rnalDr4ke](https://github.com/Inf3rnalDr4ke)
+* **HuyTQ** - [1zezus1](https://github.com/1zezus1)
 
 See also the list of [contributors](https://github.com/opflep/Drupalgeddon-Toolkit/graphs/contributors) who participated in this project.
