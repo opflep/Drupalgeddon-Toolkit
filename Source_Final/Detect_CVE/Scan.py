@@ -11,18 +11,10 @@ from Scan_2019 import isVuln
 from functools import partial
 from random import randint
 from multiprocessing import Pool
-
-# Start timer
-start = time.time()
 urllib3.disable_warnings()
-# Get file input
-file = open(sys.argv[1], 'r')
-# Get file output
-outputfile = sys.argv[2]
-# Get option CVE detect
-option = sys.argv[3]
-lines = file.readlines()
 
+def getCurrentTime():
+    return time.time()
 
 def isVulnerable(lines):
     host = "http://"+lines.strip().split("|")[0]+"/"
@@ -55,6 +47,15 @@ def isVulnerable(lines):
 
 
 if __name__ == "__main__":
+    # Start timer
+    start = getCurrentTime()
+    # Get file input
+    file = open(sys.argv[1], 'r')
+    # Get file output
+    outputfile = sys.argv[2]
+    # Get option CVE detect
+    option = sys.argv[3]
+    lines = file.readlines()
     try:
         p = Pool(processes=20)
         result = p.map(isVulnerable, lines)
@@ -62,7 +63,8 @@ if __name__ == "__main__":
     except Exception as e:
         with open(outputfile, 'a') as f:
             f.write("Exception - %s\n" % e)
-
+    # Finish timer
+    finish = getCurrentTime()
     # Open output file and write the total time scanning
     with open(outputfile, 'a') as f:
-        f.write("------| Total Time: %s |-------\n" % (time.time() - start))
+        f.write("------| Total Time: %s |-------\n" % (finish - start))
