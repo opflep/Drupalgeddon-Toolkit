@@ -1,0 +1,10 @@
+*.pyc
+.update-workspace/
+droopescan.egg-info/
+dist/
+.pypirc
+build/
+dscan/.coverage
+dscan/.noseids
+dscan/cover
+_trial_temp*
