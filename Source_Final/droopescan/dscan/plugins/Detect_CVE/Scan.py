@@ -16,7 +16,7 @@ import optparse
 start = time.time()
 urllib3.disable_warnings()
 
-
+option = 0
 def isVulnerable(lines):
     host = "http://"+lines.strip().split("|")[0]+"/"
     version = lines.strip().split("|")[1]
@@ -57,7 +57,9 @@ def main():
     parse = optparse.OptionParser()
     parse.add_option('--check', default="input.txt", help = "give input file")
     parse.add_option('--outfile', default="output.txt", help = "give output file")
+	parse.add_option('--option', default="", help = "give output file")
     opt, args = parse.parse_args()
+	option = opt.option
     try: file = open(opt.check, 'r+')
     except Exception as e:
         file = open("input.txt", 'w+')
