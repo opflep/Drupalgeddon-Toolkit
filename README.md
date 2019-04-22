@@ -89,6 +89,9 @@ OR CVE-2019-6340
 $ python Scan.py \input\input_1.txt output_1.txt 2019
 ...
 ```
+$ droopescan scan --check [inputfile_path] --outfile [outputfile_path]
+...
+```
 
 ---
 
