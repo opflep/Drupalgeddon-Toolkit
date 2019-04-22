@@ -57,7 +57,7 @@ def main():
     parse = optparse.OptionParser()
     parse.add_option('--check', default="input.txt", help = "give input file")
     parse.add_option('--outfile', default="output.txt", help = "give output file")
-	parse.add_option('--option', default="", help = "give output file")
+    parse.add_option('--option', default="", help = "give output file")
     opt, args = parse.parse_args()
 	option = opt.option
     try: file = open(opt.check, 'r+')
