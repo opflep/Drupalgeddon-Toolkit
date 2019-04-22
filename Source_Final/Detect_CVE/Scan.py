@@ -16,7 +16,7 @@ urllib3.disable_warnings()
 def getCurrentTime():
     return time.time()
 
-def isVulnerable(lines):
+def isVulnerable(lines,outputfile,option):
     host = "http://"+lines.strip().split("|")[0]+"/"
     version = lines.strip().split("|")[1]
     if (option == "2018"):
@@ -58,7 +58,7 @@ if __name__ == "__main__":
     lines = file.readlines()
     try:
         p = Pool(processes=20)
-        result = p.map(isVulnerable, lines)
+        result = p.map(isVulnerable, lines,outputfile,option)
 
     except Exception as e:
         with open(outputfile, 'a') as f:
