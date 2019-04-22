@@ -30,8 +30,9 @@ class Scan(BasePlugin):
         argument_formatter = common.SmartFormatter
         epilog = template("help_epilog.mustache")
         parse = optparse.OptionParser()
-        parse.add_option('--check', '-s', default = "", help = "print hello world")
+        parse.add_option('--check', '-s', default = "input.txt", help = "give input file")
         parse.add_option('--outfile', default="output.txt", help = "give output file")
+        parse.add_option('--option', default="", help = "Option for check drupal")		
         optss, args = parse.parse_args()
         test_args = optss.check
         if test_args:
@@ -99,6 +100,7 @@ class Scan(BasePlugin):
                     conjunction with --error-log.''', default=None)),
                 (['--check'], dict(action='store', help='''Check Drupal CVE.''', default=None)),
                 (['--outfile'], dict(action='store', help='''Output file for Check Drupal''', default=None)),
+                (['--option'], dict(action='store', help='''Option for Check Drupal''', default=None)),
             ]
 
     @controller.expose(hide=True)
