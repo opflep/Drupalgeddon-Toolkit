@@ -6,7 +6,6 @@ from cement.utils.misc import init_defaults
 from dscan.common.functions import template, version_get
 from dscan import common
 from dscan.plugins import Scan
-
 import dscan
 import os
 import signal
@@ -25,9 +24,9 @@ class DroopeScanBase(controller.CementBaseController):
     |
  ___| ___  ___  ___  ___  ___  ___  ___  ___  ___
 |   )|   )|   )|   )|   )|___)|___ |    |   )|   )
-|__/ |    |__/ |__/ |__/ |__   __/ |__  |__/||  aaaa/
+|__/ |    |__/ |__/ |__/ |__   __/ |__  |__/||  /
                     |
-===========aaa======================================
+=================================================
 """
 
         epilog = template("help_epilog.mustache")
@@ -39,20 +38,18 @@ class DroopeScanBase(controller.CementBaseController):
 
 class DroopeScan(foundation.CementApp):
     testing = False
-    #hello.testhello()
     class Meta:
         label = 'droopescan'
         base_controller = DroopeScanBase
         exit_on_close = False
         #framework_logging = False
 
-		
 def main():
     ds = DroopeScan("DroopeScan", plugin_config_dir=dscan.PWD + "./plugins.d",
             plugin_dir=dscan.PWD + "./plugins", catch_signals=None)
 
     handler.register(Scan)
-    #handler.register(hello)
+
     try:
         ds.setup()
         ds.run()

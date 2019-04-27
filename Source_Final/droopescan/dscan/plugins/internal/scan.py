@@ -14,9 +14,7 @@ import dscan.common.functions as f
 import dscan.common.plugins_util as pu
 import dscan.common.versions as v
 import gc
-from dscan.plugins.internal import hello as h
-from dscan.plugins.Detect_CVE import Scan as sc
-import optparse
+
 class Scan(BasePlugin):
 
     class Meta:
@@ -29,15 +27,7 @@ class Scan(BasePlugin):
 
         argument_formatter = common.SmartFormatter
         epilog = template("help_epilog.mustache")
-        parse = optparse.OptionParser()
-        parse.add_option('--check', '-s', default = "input.txt", help = "give input file")
-        parse.add_option('--outfile', default="output.txt", help = "give output file")
-        parse.add_option('--option', default="", help = "Option for check drupal")		
-        optss, args = parse.parse_args()
-        test_args = optss.check
-        if test_args:
-                sc.main()
-                print(test_args)
+
         arguments = [
                 (['-u', '--url'], dict(action='store', help='')),
                 (['-U', '--url-file'], dict(action='store', help='''A file which
@@ -98,9 +88,6 @@ class Scan(BasePlugin):
                 (['--resume'], dict(action='store_true', help='''Resume the url_file
                     scan as of the last known scanned url. Must be used in
                     conjunction with --error-log.''', default=None)),
-                (['--check'], dict(action='store', help='''Check Drupal CVE.''', default=None)),
-                (['--outfile'], dict(action='store', help='''Output file for Check Drupal''', default=None)),
-                (['--option'], dict(action='store', help='''Option for Check Drupal''', default=None)),
             ]
 
     @controller.expose(hide=True)
