@@ -65,13 +65,14 @@ leisureandculturedundee.com|5
 ...
 ```
 
-Return normal site and vulnerable site (mark as |EXPLOITED|...) 
+Return normal site and vulnerable site (mark as |VULNERABLE|...) or other cases
 
 ```
 ...
-abacus-direct.com|8.xx|N/A|
-fcaflightcenter.com|8.xx|N/A|
-ehudashkenazi.com|7.xx|EXPLOITED|
+viadux.com.au|8.xx|Redirected|
+haapajarvi.fi|8.xx|cleanURL_enable|
+esd.ornl.gov|8.xx|N/A|
+factsonhand.com|8.3.1|VULNERABLE|
 ...
 ```
 
