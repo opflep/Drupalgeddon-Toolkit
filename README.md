@@ -93,7 +93,6 @@ $ droopescan scan --check [inputfile_path] --outfile [outputfile_path] --option 
 ...
 ```
 
----
 
 ## Built With
 
