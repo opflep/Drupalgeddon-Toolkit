@@ -251,8 +251,8 @@ class BasePluginInternal(controller.CementBaseController):
             self.out = self._output(opts)
 
         is_cms_plugin = self._meta.label != "scan"
-        if self._meta.label == "drupal":
-                print("drupal")
+        # if self._meta.label == "drupal":
+                # print("drupal")
                 #sc.isVulnerable("http://68.183.237.96/", "8.2.3")
         if is_cms_plugin:
             self.vf = VersionsFile(self.versions_file)
